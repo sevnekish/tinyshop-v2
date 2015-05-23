@@ -1,0 +1,9 @@
+/vendor
+.env
+
+/config/database_config.ini
+
+/composer.lock
+/composer.phar
+
+*.log

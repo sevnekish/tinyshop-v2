@@ -1,0 +1,24 @@
+{
+    "name": "Sevnekish/tinyshop-v2",
+    "description" : "Tiny shop written with slim framework, Bootsrap 3, Twig and Eloquent ORM.",
+    "authors": [
+        {
+            "name": "Nikita Khmelevsky",
+            "email": "sevnekish@gmail.com",
+            "homepage": "https://github.com/Sevnekish",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "slim/slim":           "2.*",
+        "slim/views":          "^0.1.3",
+        "illuminate/database": "5.0.28",
+        "twig/twig":           "^1.18",
+        "twig/extensions":     "*"
+    },
+    "autoload": {
+        "classmap": [
+            "app/models"
+        ]
+    }
+}
