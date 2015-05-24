@@ -4,7 +4,7 @@ Tiny shop on slim framework with Bootsrap 3, Twig and Eloquent ORM.
 
 <pre>
 git clone https://github.com/Sevnekish/tinyshop-v2.git
-cd Tinyshop
+cd tinyshop-v2
 curl -s http://getcomposer.org/installer | php
 php composer.phar install
 </pre>
