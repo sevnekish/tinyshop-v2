@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim(array(
@@ -21,21 +20,23 @@ $app->add(new \Slim\Middleware\SessionCookie(array('secret' => 'aetnrjtk23A/zvcv
 
 
 // Make a new connection
-use Illuminate\Database\Capsule\Manager as Capsule;
+// use Illuminate\Database\Capsule\Manager as Capsule;
+// $capsule = new Capsule;
+// $capsule->addConnection(include '../config/database_config.ini');
+// $capsule->bootEloquent();
+// $capsule->setAsGlobal();
 
-$user = UsersFactory::createUser();
+// $user = UsersFactory::createUser();
 
-$cart = new ShoppingCart();
+// $cart = new ShoppingCart();
 
-$app->notFound(function () use ($app) {
-  $app->render('404.php');
-});
-
-
+// $app->notFound(function () use ($app) {
+//   $app->render('404.php');
+// });
 
 
 /**
- * Add some twig extensions for multilanguage support
+ * Add some twig extensions
  */
 $app->view->parserExtensions = [
     new \Slim\Views\TwigExtension()
