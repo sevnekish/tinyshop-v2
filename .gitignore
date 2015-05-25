@@ -1,9 +1,17 @@
-/vendor
-.env
+vendor/*
 
-/config/database_config.ini
+config/database_config.ini
 
-/composer.lock
-/composer.phar
+composer.lock
+composer.phar
 
 *.log
+
+app/views/cache/*
+.DS_Store
+node_modules/*
+.sass-cache/*
+
+
+public/content/css/application.css
+public/js/application.js

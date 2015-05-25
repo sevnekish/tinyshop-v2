@@ -8,7 +8,7 @@
 
     {% include 'layouts/_shim.php' %}
 
-    {% include 'layouts/_stylesheets.php' %}
+    <link href="/content/css/application.css" rel="stylesheet">
 
   </head>
   <body>

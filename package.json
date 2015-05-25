@@ -1,0 +1,26 @@
+{
+  "name": "tinyshop-v2",
+  "version": "0.0.1",
+  "description": "Tiny shop on slim framework with Bootsrap 3, Twig and Eloquent ORM. </br>Based on https://github.com/Sevnekish/tinyshop",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "~3.8.11"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.11",
+    "gulp-concat": "~2.5.2",
+    "gulp-ruby-sass": "~1.0.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sevnekish/tinyshop-v2.git"
+  },
+  "author": "Nikita Khmelevsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sevnekish/tinyshop-v2/issues"
+  }
+}
