@@ -17,7 +17,8 @@
         "robmorgan/phinx":       "0.4.*",
         "illuminate/database":   "5.0.28",
         "illuminate/validation": "5.0.28",
-        "filp/whoops":           "1.1.5"
+        "filp/whoops":           "1.1.5",
+        "zeuxisoo/slim-whoops": "0.3.0"
     },
     "autoload": {
         "classmap": [

@@ -8,3 +8,6 @@ cd tinyshop-v2
 curl -s http://getcomposer.org/installer | php
 php composer.phar install
 </pre>
+
+_phinx.yml                  -> phinx.yml
+config/_database_config.ini -> config/database_config.ini 

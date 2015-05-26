@@ -15,3 +15,4 @@ node_modules/*
 
 public/content/css/application.css
 public/js/application.js
+phinx.yml
