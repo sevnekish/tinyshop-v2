@@ -10,15 +10,16 @@
         }
     ],
     "require": {
-        "slim/slim":             "2.6.2",
-        "slim/views":            "^0.1.3",
-        "twig/twig":             "^1.18",
-        "twig/extensions":       "*",
-        "robmorgan/phinx":       "0.4.*",
-        "illuminate/database":   "5.0.28",
-        "illuminate/validation": "5.0.28",
-        "filp/whoops":           "1.1.5",
-        "zeuxisoo/slim-whoops": "0.3.0"
+        "slim/slim":              "2.6.2",
+        "slim/views":             "^0.1.3",
+        "twig/twig":              "^1.18",
+        "twig/extensions":        "*",
+        "robmorgan/phinx":        "0.4.*",
+        "illuminate/database":    "5.0.28",
+        "illuminate/validation":  "5.0.28",
+        "illuminate/translation": "5.0.28",
+        "filp/whoops":            "1.1.5",
+        "zeuxisoo/slim-whoops":   "0.3.0"
     },
     "autoload": {
         "classmap": [

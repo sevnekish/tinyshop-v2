@@ -8,7 +8,7 @@ require '../vendor/autoload.php';
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as Manager;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -50,7 +50,7 @@ $whoops->register();
 $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 // Make a new connection
-$capsule     = new Capsule;
+$capsule     = new Manager;
 $environment = $configArray['environment'];
 $capsule->addConnection(array(
   'driver'    => $configArray['environments'][$environment]['adapter'],
@@ -63,10 +63,13 @@ $capsule->addConnection(array(
   'prefix'    => $configArray['environments'][$environment]['prefix'],
 ));
 $capsule->bootEloquent();
-$capsule->setAsGlobal();
+$app->db = $capsule;
+// $capsule->setAsGlobal();
 
 // $user = UsersFactory::createUser();
 $user = new User;
+
+
 
 // $cart = new ShoppingCart();
 
