@@ -1,8 +1,14 @@
 <?
 /**
- * bootstrap.php
+ * Display errors
  */
 
+error_reporting('E_ALL');
+ini_set('display_errors', 1);
+
+/**
+ * Composer autoload
+ */
 require '../vendor/autoload.php';
 
 use Whoops\Handler\PrettyPageHandler;
@@ -11,7 +17,6 @@ use Whoops\Handler\JsonResponseHandler;
 use Illuminate\Database\Capsule\Manager as Manager;
 
 use Symfony\Component\Yaml\Yaml;
-
 function fromYaml($configFilePath) {
     $configArray = Yaml::parse(file_get_contents($configFilePath));
     if (!is_array($configArray)) {
@@ -23,12 +28,7 @@ function fromYaml($configFilePath) {
 $configArray = fromYaml('../phinx.yml');
 
 
-/**
- * Display errors
- */
 
-error_reporting('E_ALL');
-ini_set('display_errors', 1);
 
 \Slim\Slim::registerAutoloader();
 
@@ -60,7 +60,7 @@ $capsule->addConnection(array(
   'password'  => $configArray['environments'][$environment]['pass'],
   'charset'   => $configArray['environments'][$environment]['charset'],
   'collation' => $configArray['environments'][$environment]['collation'],
-  'prefix'    => $configArray['environments'][$environment]['prefix'],
+  'prefix'    => $configArray['illuminate_config']['prefix'],
 ));
 $capsule->bootEloquent();
 $app->db = $capsule;
@@ -69,6 +69,7 @@ $app->db = $capsule;
 // $user = UsersFactory::createUser();
 $user = new User;
 
+$cart;
 
 
 // $cart = new ShoppingCart();
@@ -84,3 +85,25 @@ $user = new User;
 $app->view->parserExtensions = [
     new \Slim\Views\TwigExtension()
 ];
+
+/**
+ * Add some data to view
+ */
+$app->hook('slim.before.dispatch', function() use ($app, $user, $cart) {
+  // $userparams = $user->getParams();
+  // $categories = $user->getCategories();
+  // $cart_count = $cart->getCount();
+
+  // $flash = $app->view()->getData('flash');
+  // $error = isset($flash['error']) ? $flash['error'] : '';
+  // $success = isset($flash['success']) ? $flash['success'] : '';
+
+  // $app->view()->setData(array(
+  //                 'userparams' => $userparams,
+  //                 'cart_count' => $cart_count,
+  //                 'error'      => $error,
+  //                 'success'    => $success,
+  //                 'categories' => $categories
+  //               ));
+});
+

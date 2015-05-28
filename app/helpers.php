@@ -1,9 +1,16 @@
 <?
 /**
- * Custom helpers
+ * Custom helpers (middleware functions for routes)
  */
 
+$logged_in_user = function() {};
 
+$correct_user = function() {};
+
+
+// Refactoring:
+// rename to authenticate
+// access_denied + authentication = one method
 
 $authentication = function($app, $user, $authentication_role) {
   return function() use ($app, $user, $authentication_role) {

@@ -14,13 +14,5 @@ class User extends Illuminate\Database\Eloquent\Model {
     'content'  => 'required|min:3'
   ];
 
-  public static $messages = [
-    'required' => 'Your :attribute is required.',
-    'min'      => 'Your :attribute must be at least :min characters long.',
-    'max'      => 'Your :attribute must be a maximum of :max characters long.',
-    'between'  => 'Your :attribute must be between :min - :max characters long.',
-    'email'    => 'Your :attribute must be a valid email address',
-    'unique'   => 'Your :attribute must be a unique'
-  ];
 
 }

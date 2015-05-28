@@ -12,6 +12,7 @@ environments:
         pass: ''
         port: 3306
         charset: utf8
+        collation: utf8_general_ci
 
     development:
         adapter: mysql
@@ -21,6 +22,7 @@ environments:
         pass: ''
         port: 3306
         charset: utf8
+        collation: utf8_general_ci
 
     testing:
         adapter: mysql
@@ -30,9 +32,9 @@ environments:
         pass: ''
         port: 3306
         charset: utf8
+        collation: utf8_general_ci
 
 illuminate_config:
     prefix: ''
-    collation: utf8_unicode_ci
 
 environment: development
