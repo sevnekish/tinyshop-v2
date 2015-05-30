@@ -12,8 +12,11 @@
 
   </head>
   <body>
-  
+
   {% include 'layouts/_header.php' %}
+
+  <!-- success, danger, info messages -->
+  {% include 'layouts/_messages.php' %}
 
   {% block content %}
   {% endblock %}

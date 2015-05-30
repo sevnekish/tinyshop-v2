@@ -16,6 +16,8 @@ class CreateUsers extends AbstractMigration
         $users = $this->table('users');
         $users->addColumn('name',              'string',   array('limit' => 255))
               ->addColumn('email',             'string',   array('limit' => 255))
+              ->addColumn('telephone',         'string',   array('limit' => 255))
+              ->addColumn('address',           'string',   array('limit' => 255))
               ->addColumn('admin',             'boolean',  array('default' => false))
               ->addColumn('password_digest',   'string',   array('limit' => 255))
               ->addColumn('remember_digest',   'string',   array('limit' => 255))

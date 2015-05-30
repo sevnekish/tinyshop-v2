@@ -22,12 +22,13 @@ class Validator {
    * @var array
    */
   protected $messages = [
-                         'required' => 'Your :attribute is required.',
-                         'min'      => 'Your :attribute must be at least :min characters long.',
-                         'max'      => 'Your :attribute must be a maximum of :max characters long.',
-                         'between'  => 'Your :attribute must be between :min - :max characters long.',
-                         'email'    => 'Your :attribute must be a valid email address',
-                         'unique'   => 'Your :attribute must be a unique'
+                         'required' => 'The :attribute is required.',
+                         'min'      => 'The :attribute must be at least :min characters long.',
+                         'max'      => 'The :attribute must be a maximum of :max characters long.',
+                         'between'  => 'The :attribute must be between :min - :max characters long.',
+                         'email'    => 'The :attribute must be a valid email address',
+                         'unique'   => 'The :attribute must be a unique',
+                         'numeric'  => 'The :attribute must be a number'
   ];
 
   /**
@@ -56,10 +57,11 @@ class Validator {
        */
       $dbManager = $db->getDatabaseManager();
       $this->factory->setPresenceVerifier(new DatabasePresenceVerifier($dbManager));
-
     }
     return $this->factory;
   }
+
+
 
   public function __call($method, $args)
   {

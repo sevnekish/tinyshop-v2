@@ -33,15 +33,27 @@ $configArray = fromYaml('../phinx.yml');
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim(array(
-                            'templates.path' => '../app/views',
-                            "view"           => new \Slim\Views\Twig(),
-                            'debug'          => true
+                            'templates.path'     => TEMPLATEDIR,
+                            "view"               => new \Slim\Views\Twig(),
+                            'debug'              => true,
+                            'cookies.encrypt'    => true,
+                            'cookies.secret_key' => 'aetnrid243A/zvcv{]daff34G'
 ));
 
 // $app->add(new \Slim\Middleware\SessionCookie()); not work well, beacause we use $_SESSION => session_start();
-// session_start();
-// Try one more time
-$app->add(new \Slim\Middleware\SessionCookie(array('secret' => 'aetnrjtk23A/zvcv{]daff34G')));
+session_cache_limiter(false);
+session_start();
+$app->add(new \Slim\Middleware\SessionCookie(array(
+    'expires'     => '20 minutes',
+    'path'        => '/',
+    'domain'      => null,
+    'secure'      => false,
+    'httponly'    => false,
+    'name'        => 'slim_session',
+    'secret'      => 'aff32HJJ/[}d234d',
+    'cipher'      => MCRYPT_RIJNDAEL_256,
+    'cipher_mode' => MCRYPT_MODE_CBC
+)));
 
 
 $whoops = new \Whoops\Run;
@@ -67,8 +79,8 @@ $app->db = $capsule;
 // $capsule->setAsGlobal();
 
 // $user = UsersFactory::createUser();
-$user = new User;
-
+// $user = new User;
+$validator = new Validator($app->db);
 $cart;
 
 
@@ -97,7 +109,12 @@ $app->hook('slim.before.dispatch', function() use ($app, $user, $cart) {
   // $flash = $app->view()->getData('flash');
   // $error = isset($flash['error']) ? $flash['error'] : '';
   // $success = isset($flash['success']) ? $flash['success'] : '';
+  // $flash = $app->view()->getData('flash');
 
+  // echo '<pre>';
+  // print_r($flash);
+  // echo '</pre>';
+  // exit;
   // $app->view()->setData(array(
   //                 'userparams' => $userparams,
   //                 'cart_count' => $cart_count,
@@ -105,5 +122,8 @@ $app->hook('slim.before.dispatch', function() use ($app, $user, $cart) {
   //                 'success'    => $success,
   //                 'categories' => $categories
   //               ));
+  $app->view()->setData(array(
+                              'messages' => $_SESSION['slim.flash']
+  ));
 });
 
