@@ -16,3 +16,5 @@ node_modules/*
 public/content/css/application.css
 public/js/application.js
 phinx.yml
+
+app/mailer/smtp_config.php

@@ -54,5 +54,25 @@ class User extends Illuminate\Database\Eloquent\Model {
     // $diges = self::
   }
 
+  public function new_token() {
+    return StringHelper::random_string_simple(8);
+  }
+
+  public function create_password_digest($password) {
+    return password_hash($password, PASSWORD_BCRYPT);
+  }
+
+  public function create_activation_digest() {
+    //maybe need this only private with setting up only instance variable
+    return password_hash($this->new_token(), PASSWORD_BCRYPT);
+  }
+
+  public function verify_password($password) {
+    if (password_verify($password, $this->password_digest))
+      return true;
+    else
+      return false;
+  }
+
 
 }
