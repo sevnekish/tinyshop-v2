@@ -2,17 +2,22 @@
 /**
  * Display errors
  */
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\JsonResponseHandler;
 
 error_reporting('E_ALL');
 ini_set('display_errors', 1);
+error_reporting(-1);
 
 /**
  * Composer autoload
  */
 require '../vendor/autoload.php';
 
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Handler\JsonResponseHandler;
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
 
 use Illuminate\Database\Capsule\Manager as Manager;
 
@@ -40,6 +45,8 @@ $app = new \Slim\Slim(array(
                             'cookies.secret_key' => 'aetnrid243A/zvcv{]daff34G'
 ));
 
+$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
+
 // $app->add(new \Slim\Middleware\SessionCookie()); not work well, beacause we use $_SESSION => session_start();
 session_cache_limiter(false);
 session_start();
@@ -54,12 +61,6 @@ $app->add(new \Slim\Middleware\SessionCookie(array(
     'cipher'      => MCRYPT_RIJNDAEL_256,
     'cipher_mode' => MCRYPT_MODE_CBC
 )));
-
-
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
-$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 // Make a new connection
 $capsule     = new Manager;
@@ -95,13 +96,14 @@ $cart;
  * Add some twig extensions
  */
 $app->view->parserExtensions = [
-    new \Slim\Views\TwigExtension()
+    new \Slim\Views\TwigExtension(),
+    new Twig_Extension_Debug()
 ];
 
 /**
  * Add some data to view
  */
-$app->hook('slim.before.dispatch', function() use ($app, $user, $cart) {
+$app->hook('slim.before.dispatch', function() use ($app) {
   // $userparams = $user->getParams();
   // $categories = $user->getCategories();
   // $cart_count = $cart->getCount();
@@ -122,8 +124,9 @@ $app->hook('slim.before.dispatch', function() use ($app, $user, $cart) {
   //                 'success'    => $success,
   //                 'categories' => $categories
   //               ));
+
   $app->view()->setData(array(
-                              'messages' => $_SESSION['slim.flash']
+                              
   ));
 });
 

@@ -7,9 +7,9 @@
     <form class="form-signin" action="/users" method="post">
 
       <label>Name</label>
-        <input name="name" type="text" value="" class="form-control input-xlarge" required>
+        <input name="name" type="text" value="{{ flash.prev_params.name }}" class="form-control input-xlarge" required>
       <label>Email</label>
-        <input name="email" type="text" value="" class="form-control input-xlarge" required>
+        <input name="email" type="text" value="{{ flash.prev_params.email }}" class="form-control input-xlarge" required>
 
       <label>Password</label>
         <input id="password" type="password" name="password" type="text" value="" class="form-control input-xlarge" autocomplete="off" required>
@@ -23,10 +23,9 @@
       </div>
 
       <label>Telephone</label>
-        <input name="telephone" type="text" value="" class="form-control input-xlarge" required>
+        <input name="telephone" type="text" value="{{ flash.prev_params.telephone }}" class="form-control input-xlarge" required>
       <label>Address</label>
-      <textarea name="address" rows="3" class="form-control input-xlarge" required>
-      </textarea>
+      <textarea name="address" rows="3" class="form-control input-xlarge" required>{{ flash.prev_params.address }}</textarea>
       <br>
       <div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>

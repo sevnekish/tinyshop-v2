@@ -1,6 +1,6 @@
 <div class="container">
-  {% if messages %}
-    {% for type, messages_array in messages %}
+  {% if flash.messages %}
+    {% for type, messages_array in flash.messages %}
       <div class="alert alert-{{ type }}" role="alert">
         <ul>
           {% for message in messages_array %}
