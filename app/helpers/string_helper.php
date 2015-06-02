@@ -14,10 +14,10 @@ class StringHelper {
    return base64_decode(urldecode($input));
   }
   /**
-   * Generate a simple random url safe string.
+   * Generate a simple random string.
    */
   public static function random_string_simple($length = 16) {
     $charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return self::base64_url_decode(substr(str_shuffle(str_repeat($charset, $length)), 0, $length));
+    return substr(str_shuffle(str_repeat($charset, $length)), 0, $length);
   }
 }

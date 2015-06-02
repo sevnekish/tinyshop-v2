@@ -1,5 +1,8 @@
 <?
 class User extends Illuminate\Database\Eloquent\Model {
+
+  // define('ACTMAIL', '');
+
   /**
    * The database table used by the model.
    *
@@ -63,8 +66,16 @@ class User extends Illuminate\Database\Eloquent\Model {
   }
 
   public function create_activation_digest() {
-    //maybe need this only private with setting up only instance variable
-    return password_hash($this->new_token(), PASSWORD_BCRYPT);
+    // ? maybe need this only private with setting up only instance variable
+    return StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
+  }
+
+  public function send_activation_email() {
+    $tags_mail    = [':/name', ':/link'];
+    $link = $_SERVER['SCRIPT_FILENAME'] . $this->create_activation_digest() . '/edit/' . $this->StringHelper::base64_url_encode($user->email);
+    $replace_mail = [$this->name, $link];
+    $mail_html = str_replace(,,file_get_contents('../views/mailer/activation_mail.php'));
+    send_mail($this->email, $this->name, 'Activation email', $mail_html);
   }
 
   public function verify_password($password) {
