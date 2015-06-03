@@ -3,16 +3,16 @@ $app->get("/login", function() use ($app) {
   $app->render('sessions/new.php');
 });
 
-$app->post("/login", function() use ($app) {
+$app->post("/login", function() use ($app, $validator) {
   $params = $app->request()->post();
 
-  $vaildation = $validator->make($params, array_merge(
-                                 User::$email_rules,
+  $validation = $validator->make($params, array_merge(
+                                 User::$email_alt_rules,
                                  User::$password_rules
   ));
 
   //creating array of validation errors
-  $messages_all = $vaildation->messages()->all()
+  $messages_all = $validation->messages()->all();
 
   //if there is any validation errors
   if (!empty($messages_all)) {
@@ -25,8 +25,8 @@ $app->post("/login", function() use ($app) {
   if ($user && $user->password_verify($params['password'])) {
     if ($user->activated) {
       SessionsHelper::log_in($user);
-      isset($params['remember_me']) ? SessionsHelper::remember($user) : SessionsHelper::forget($user);
-      SessionsHelper::redirect_back_or('/');
+      isset($params['remember_me']) ? SessionsHelper::remember($app, $user) : SessionsHelper::forget($app, $user);
+      SessionsHelper::redirect_back_or($app, '/');
     } else {
       $app->flash('messages', ['warning' => ['Account not activated! Check your email for the activation link.']]);
       $app->redirect('/');

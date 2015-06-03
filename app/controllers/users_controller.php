@@ -42,7 +42,7 @@ $app->get("/users/test",  function() use ($app, $validator, $environment) {
   // echo '<pre>';
   // echo $mail_html;
   /////////////////////////////
-  // $_SESSION['user_id'] = 9;
+  unset($_SESSION['user_id']);
   // echo $_SESSION['user_id'];
   // exit;
   //////////////////////////////
@@ -52,7 +52,8 @@ $app->get("/users/test",  function() use ($app, $validator, $environment) {
   // // print_r($user);
   // // echo '</pre>';
   // SessionsHelper::log_out($app, $user);
-  exit;
+  // exit;
+  // $app->setCookie('test', 'worked');
 });
 
 $app->get("/users/:id",  function($id) use ($app) {
@@ -63,7 +64,7 @@ $app->post("/users", function() use ($app, $validator, $environment) {
 
   $params = $app->request()->post();
 
-  $vaildation = $validator->make($params, array_merge(
+  $validation = $validator->make($params, array_merge(
                                  User::$name_rules,
                                  User::$email_rules,
                                  User::$password_rules,
@@ -75,7 +76,7 @@ $app->post("/users", function() use ($app, $validator, $environment) {
   $message_password_confirmation = array();
   if ($params['password'] != $params['password_confirmation'])
     $message_password_confirmation = ['Password confirmation doesn\'t match'];
-  $messages_validation = $vaildation->messages()->all();
+  $messages_validation = $validation->messages()->all();
   $messages_all = array_merge($message_password_confirmation, $messages_validation);
 
   //if there is any errors

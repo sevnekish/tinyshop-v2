@@ -1,4 +1,5 @@
 <?
+
 /**
  * Display errors
  */
@@ -124,9 +125,9 @@ $app->hook('slim.before.dispatch', function() use ($app) {
   //                 'success'    => $success,
   //                 'categories' => $categories
   //               ));
-  $user = SessionsHelper::current_user($app);
+  $current_user = SessionsHelper::current_user($app);
   $app->view()->setData(array(
-                              'user' => $user
+                              'current_user' => $current_user
   ));
 });
 

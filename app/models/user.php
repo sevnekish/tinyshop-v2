@@ -41,17 +41,18 @@ class User extends Illuminate\Database\Eloquent\Model {
 
   public static $name_rules      = ['name'      => 'required|between:2,120'];
   public static $email_rules     = ['email'     => 'required|max:255|email|unique:users'];
+  public static $email_alt_rules = ['email'     => 'required|max:255|email'];
   public static $password_rules  = ['password'  => 'required|between:6,255'];
   public static $telephone_rules = ['telephone' => 'required|min:6|numeric'];
   public static $address_rules   = ['address'   => 'required|between:7,160'];
 
 
 
-  public static $rules = [
-    'email'    => 'required|email|max:255|unique:users',
-    'title'    => 'required|between:4,16',
-    'content'  => 'required|min:3'
-  ];
+  public function save(array $options = array()) {
+    //before save
+    $this->email = strtolower($this->email);
+    parent::save($options);
+  }
 
   public function is_authenticated($attribute, $token) {
     $attribute = $attribute . '_digest';
@@ -60,11 +61,12 @@ class User extends Illuminate\Database\Eloquent\Model {
   }
 
   public function password_verify($password) {
-    return password_verify($password, $this->password_digest);
+    return password_verify($password, StringHelper::base64_url_decode($this->password_digest));
   }
 
   public function activate() {
     $this->activated = true;
+    $this->activated_at = date ("Y-m-d H:i:s", time());
     $this->save();
   }
 

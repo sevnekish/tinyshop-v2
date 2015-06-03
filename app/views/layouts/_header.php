@@ -30,7 +30,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right navigation">
 
-        <? if ($userparams['role'] === 'guest'): ?>
+        {% if not current_user %}
           <li class="dropdown">
 
             <a href="/logreg" class="dropdown-toggle" data-toggle="dropdown">
@@ -49,7 +49,7 @@
             </ul>
 
           </li>
-        <? endif;?>
+        {% endif %}
 
         {% if current_user %}
           <li>

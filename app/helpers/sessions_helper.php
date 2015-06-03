@@ -45,6 +45,12 @@ class SessionsHelper {
     $app->view()->setData('current_user', null);
   }
 
+  public static function remember($app, $user) {
+    $user->remember();
+    $app->setCookie('user_id',        $user->id,             '1 year');
+    $app->setCookie('remember_token', $user->remember_digest, '1 year');
+  }
+
   public static function forget($app, $user) {
     $user->forget();
     $app ->deleteCookie('user_id');
@@ -55,9 +61,13 @@ class SessionsHelper {
     if (isset($_SESSION['forward_url'])) {
       $forward_url = $_SESSION['forward_url'];
       unset($_SESSION['forward_url']);
-      $app->redirect_to($forward_url);
+      $app->redirect($forward_url);
     } else
-      $app->redirect_to($redirect_url);
+      $app->redirect($redirect_url);
+  }
+
+  public static function store_location($app) {
+    $_SESSION['forwarding_url'] = $app->request()->getPathInfo();
   }
 
 
