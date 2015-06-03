@@ -31,41 +31,37 @@
       <ul class="nav navbar-nav navbar-right navigation">
 
         <? if ($userparams['role'] === 'guest'): ?>
-        <li class="dropdown">
+          <li class="dropdown">
 
-          <a href="/logreg" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-sign-in"></i> Login / Registrate
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="/login">Login</a>
-            </li>
+            <a href="/logreg" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-sign-in"></i> Sign in / Sign up
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/login">Sign in</a>
+              </li>
 
-            <li class="divider" ></li>
-            
-            <li>
-              <a href="/registration">Registrate</a>
-            </li>
-          </ul>
+              <li class="divider" ></li>
+              
+              <li>
+                <a href="/registration">Sign up</a>
+              </li>
+            </ul>
 
-        </li>
+          </li>
         <? endif;?>
 
-        <? if ($userparams['role'] === 'user'): ?>
-        <li>
-          <a href="/account/userinfo">
-            <i class="fa fa-user"></i> <? echo $userparams['email']?>
-          </a>
-        </li>
-        <? endif;?>
-
-        <? if ($userparams['role'] === 'admin'): ?>
-        <li>
-          <a href="/adminbar">
-            <i class="fa fa-wrench"></i> Administrator
-          </a>
-        </li>
-        <? endif;?>
+        {% if current_user %}
+          <li>
+            <a href="#">
+              {% if current_user.admin %}
+                <i class="fa fa-wrench"></i> admin@email.com
+              {% else %}
+                <i class="fa fa-user"></i> example@email.com
+              {% endif %}
+            </a>
+          </li>
+        {% endif %}
 
 
         <li class="<?if ($userparams['role'] === 'admin'):?>disabled<?endif;?>">

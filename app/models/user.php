@@ -53,37 +53,53 @@ class User extends Illuminate\Database\Eloquent\Model {
     'content'  => 'required|min:3'
   ];
 
-  public function authenticated($attribute, $token) {
-    // $diges = self::
+  public function is_authenticated($attribute, $token) {
+    $attribute = $attribute . '_digest';
+    $digest = $this->{$attribute};
+    return $digest == $token;
+  }
+
+  public function password_verify($password) {
+    return password_verify($password, $this->password_digest);
+  }
+
+  public function activate() {
+    $this->activated = true;
+    $this->save();
   }
 
   public function new_token() {
     return StringHelper::random_string_simple(8);
   }
 
+  public function remember() {
+    $this->remember_digest = $this->new_token();
+    $this->save();
+  }
+
+  public function forget() {
+    $this->remember_digest = null;
+    $this->save();
+  }
+
   public function create_password_digest($password) {
-    return password_hash($password, PASSWORD_BCRYPT);
+    return StringHelper::base64_url_encode(password_hash($password, PASSWORD_BCRYPT));
   }
 
   public function create_activation_digest() {
-    // ? maybe need this only private with setting up only instance variable
     return StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
   }
 
   public function send_activation_email() {
     $tags_mail    = [':/name', ':/link'];
-    $link = $_SERVER['SCRIPT_FILENAME'] . $this->create_activation_digest() . '/edit/' . $this->StringHelper::base64_url_encode($user->email);
+    //modify link with constant !!! Not final version!
+    $link = 'http://tinyshopv2/account_activations/' . $user->create_activation_digest() . '/edit/' . StringHelper::base64_url_encode($user->email);
     $replace_mail = [$this->name, $link];
-    $mail_html = str_replace(,,file_get_contents('../views/mailer/activation_mail.php'));
+    //modify path for file with constant !!! Not final version!
+    $mail_html = str_replace($tags_mail, $replace_mail, file_get_contents('../app/views/mailer/activation_mail.php'));
     send_mail($this->email, $this->name, 'Activation email', $mail_html);
   }
 
-  public function verify_password($password) {
-    if (password_verify($password, $this->password_digest))
-      return true;
-    else
-      return false;
-  }
 
 
 }

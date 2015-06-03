@@ -4,7 +4,7 @@ class SessionsHelper {
   /**
    * Redirect User to the root_url if User logged in.
    */
-  public static function not_logged_in_user($app) {
+  public static function not_logged_in($app) {
     if (self::logged_in($app)) {
       $app->flash('danger', ['You are already logged in.']);
       $app->redirect('/');
@@ -18,25 +18,47 @@ class SessionsHelper {
   }
 
   public static function current_user($app) {
-    if ($user_id = $_SESSION['user_id'])
+    if (isset($_SESSION['user_id'])) {
+      $user_id = $_SESSION['user_id'];
       return $current_user = User::find($user_id);
-    // elseif ($user_id = $app->getCookie('user_id')) {
-    //   $user = User::find($user_id);
-    //   if $user && $user->authenticated('remember', $app->getCookie('remember_token')) {
-    //     log_in($user);
-    //     return $current_user = $user;
-    //   }
+    } elseif (null !== $app->getCookie('user_id')) {
+      $user_id = $app->getCookie('user_id');
+      $user = User::find($user_id);
+      if ($user && $user->is_authenticated('remember', $app->getCookie('remember_token'))) {
+        self::log_in($user);
+        return $current_user = $user;
+      }
     }
+  }
 
+  public static function is_current_user($app, $user) {
+    return $user == self::current_user($app);
   }
 
   public static function log_in($user) {
     $_SESSION['user_id'] = $user->id;
   }
 
-  // $logged_in_user = function() {};
+  public static function log_out($app) {
+    self::forget($app, self::current_user($app));
+    unset($_SESSION['user_id']);
+    $app->view()->setData('current_user', null);
+  }
 
-  // $correct_user = function() {};
+  public static function forget($app, $user) {
+    $user->forget();
+    $app ->deleteCookie('user_id');
+    $app ->deleteCookie('remember_token');
+  }
+
+  public static function redirect_back_or($app, $redirect_url) {
+    if (isset($_SESSION['forward_url'])) {
+      $forward_url = $_SESSION['forward_url'];
+      unset($_SESSION['forward_url']);
+      $app->redirect_to($forward_url);
+    } else
+      $app->redirect_to($redirect_url);
+  }
 
 
   // Refactoring:

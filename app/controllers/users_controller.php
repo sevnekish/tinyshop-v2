@@ -1,7 +1,7 @@
 <?
 
 
-$app->get("/users/new",  function() use ($app, $validator) {
+$app->get("/users/new",  function() use ($app) {
   $app->render('users/new.php');
 });
 
@@ -27,7 +27,36 @@ $app->get("/users/test",  function() use ($app, $validator, $environment) {
   // $base64_str = 'a2VsdmluMTIzQGdtYWlsLmNvbQ%3D%3D';
   // echo StringHelper::base64_url_decode($base64_str);
   //////////////////////////////
+  // $user = new User();
+  // $user->name = "John";
+  // $user->email = 'test@gmail.com';
+  //  $tags_mail    = [':/name', ':/link'];
+  // $link = 'http://tinyshopv2/account_activations/' . $user->create_activation_digest() . '/edit/' . StringHelper::base64_url_encode($user->email);
+  // $replace_mail = [$user->name, $link];
+  // $mail_html = str_replace($tags_mail, $replace_mail, file_get_contents('../app/views/mailer/activation_mail.php'));
+  // // $userk = User::find(2);
+  // $userk = User::where('email', '=', 'entony123@gmail.com')->first();
+  // echo '<pre>';
+  // print_r($userk->name);
+  // echo '</pre>';
+  // echo '<pre>';
+  // echo $mail_html;
+  /////////////////////////////
+  // $_SESSION['user_id'] = 9;
+  // echo $_SESSION['user_id'];
+  // exit;
+  //////////////////////////////
+  // $user = User::find(10);
+  // SessionsHelper::log_in($user);
+  // // echo '<pre>';
+  // // print_r($user);
+  // // echo '</pre>';
+  // SessionsHelper::log_out($app, $user);
   exit;
+});
+
+$app->get("/users/:id",  function($id) use ($app) {
+  $app->render('users/show.php');
 });
 
 $app->post("/users", function() use ($app, $validator, $environment) {

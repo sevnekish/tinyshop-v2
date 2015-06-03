@@ -124,9 +124,9 @@ $app->hook('slim.before.dispatch', function() use ($app) {
   //                 'success'    => $success,
   //                 'categories' => $categories
   //               ));
-
+  $user = SessionsHelper::current_user($app);
   $app->view()->setData(array(
-                              
+                              'user' => $user
   ));
 });
 
