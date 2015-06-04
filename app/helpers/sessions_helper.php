@@ -9,7 +9,7 @@ class SessionsHelper {
     return function() use ($app) {
       if (!self::logged_in($app)) {
         self::store_location($app);
-        $app->flash('danger', ['Please log in!']);
+        $app->flash('messages', ['danger' => ['Please log in!']]);
         $app->redirect('/login');
       }
     };
@@ -22,7 +22,7 @@ class SessionsHelper {
   public static function not_logged_in_user($app) {
     return function() use ($app) {
       if (self::logged_in($app)) {
-        $app->flash('danger', ['You are already logged in.']);
+        $app->flash('messages', ['danger' => ['You are already logged in!']]);
         $app->redirect('/');
       }
     };
@@ -54,6 +54,13 @@ class SessionsHelper {
 
   public static function is_current_user($app, $user) {
     return $user == self::current_user($app);
+  }
+
+  public static function is_activated($app, $user) {
+    if (!$user->activated) {
+      $app->flash('messages', ['warning' => ['Account not activated! Check your email for the activation link.']]);
+      $app->redirect('/');
+    }
   }
 
   public static function log_in($user) {

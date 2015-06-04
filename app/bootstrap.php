@@ -125,6 +125,7 @@ $app->hook('slim.before.dispatch', function() use ($app) {
   //                 'success'    => $success,
   //                 'categories' => $categories
   //               ));
+  // echo '<pre>'; var_dump($_SESSION);exit;
   $current_user = SessionsHelper::current_user($app);
   $app->view()->setData(array(
                               'current_user' => $current_user

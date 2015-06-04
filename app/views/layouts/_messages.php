@@ -1,5 +1,5 @@
 <div class="container">
-  {% if flash.messages %}
+  {% if flash['messages'] is defined %}
     {% for type, messages_array in flash.messages %}
       <div class="alert alert-{{ type }}" role="alert">
         <ul>
@@ -11,7 +11,7 @@
     {% endfor %}
   {% endif %}
 
-  {% if flash.debug_info %}
+  {% if flash['debug_info'] is defined %}
     {% for type, messages_array in flash.debug_info %}
       {% if type == 'link' %}
         <div class="alert alert-info" role="alert">

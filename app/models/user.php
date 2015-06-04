@@ -109,7 +109,7 @@ class User extends Illuminate\Database\Eloquent\Model {
     send_mail($this->email, $this->name, 'Activation email', $mail_html);
   }
 
-  public function send_reset_email(); {
+  public function send_reset_email() {
     
   }
 
