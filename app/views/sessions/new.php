@@ -8,9 +8,12 @@
 
       <h2 class="form-signin-heading">Please sign in</h2>
 
-      <input name="email" id="inputEmail" class="form-control" type="email" autofocus="" required="" placeholder="Email address">
+      <label>Email</label>
+      <input name="email" id="inputEmail" class="form-control" type="email" autofocus="" required="" >
+
+      <label>Password<a href="/password_resets/new">(forgot password)</a></label>
       <label class="sr-only" for="inputPassword">Password</label>
-      <input name="password" id="inputPassword" class="form-control" type="password" required="" placeholder="Password" autocomplete="off">
+      <input name="password" id="inputPassword" class="form-control" type="password" required="" autocomplete="off">
       <div class="checkbox">
         <label>
           <input name= "remember_me" type="checkbox" value="remember_me">
@@ -19,8 +22,9 @@
       </div>
       <br>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      {% if urlRedirect %}
-        <div class="panel panel-warning" role="alert">You will redirect to "{{ urlRedirect }}" upon login</div>
+      <p>New user? <a href="/users/new">Sign up now</a></p>
+      {% if forward_url %}
+        <div class="panel panel-warning" role="alert">You will redirect to "{{ forward_url }}" upon sign in</div>
       {% endif %}
     </form>
     </div>

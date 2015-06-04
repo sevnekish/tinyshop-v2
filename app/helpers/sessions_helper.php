@@ -2,13 +2,34 @@
 
 class SessionsHelper {
   /**
-   * Redirect User to the root_url if User logged in.
+   * For Slim Middleware.
+   * Redirect User to the login url if User not logged in.
    */
-  public static function not_logged_in($app) {
-    if (self::logged_in($app)) {
-      $app->flash('danger', ['You are already logged in.']);
-      $app->redirect('/');
-    }
+  public static function logged_in_user($app) {
+    return function() use ($app) {
+      if (!self::logged_in($app)) {
+        self::store_location($app);
+        $app->flash('danger', ['Please log in!']);
+        $app->redirect('/login');
+      }
+    };
+  }
+
+  /**
+   * For Slim Middleware.
+   * Redirect User to the root url if User logged in.
+   */
+  public static function not_logged_in_user($app) {
+    return function() use ($app) {
+      if (self::logged_in($app)) {
+        $app->flash('danger', ['You are already logged in.']);
+        $app->redirect('/');
+      }
+    };
+  }
+
+  public static function correct_user($app, $id) {
+      if (self::current_user($app)->id != $id) $app->redirect('/');
   }
   /**
    * Returns true if the user is logged in.
@@ -47,7 +68,7 @@ class SessionsHelper {
 
   public static function remember($app, $user) {
     $user->remember();
-    $app->setCookie('user_id',        $user->id,             '1 year');
+    $app->setCookie('user_id',        $user->id,              '1 year');
     $app->setCookie('remember_token', $user->remember_digest, '1 year');
   }
 
@@ -67,46 +88,6 @@ class SessionsHelper {
   }
 
   public static function store_location($app) {
-    $_SESSION['forwarding_url'] = $app->request()->getPathInfo();
+    $_SESSION['forward_url'] = $app->request()->getPathInfo();
   }
-
-
-  // Refactoring:
-  // rename to authenticate
-  // access_denied + authentication = one method
-
-  // $authentication = function($app, $user, $authentication_role) {
-  //   return function() use ($app, $user, $authentication_role) {
-  //     $user_role = $user->getRole();
-  //     if ($authentication_role != $user_role) {
-  //       switch($user_role){
-  //         case 'admin': $app->redirect("/adminbar"); break;
-  //         case 'user': $app->redirect("/account"); break;
-  //         case 'guest': 
-  //           $app->flash('error', 'Login required');
-  //           $app->setCookie('urlRedirect', $app->request()->getPathInfo(), '4 minutes');
-  //           $app->redirect("/login");
-  //           break;
-  //         }
-  //     }
-  //   };
-  // };
-
-  // $access_denied = function($app, $user, $denied_user_role) {
-  //   return function() use ($app, $user, $denied_user_role) {
-  //     $user_role = $user->getRole();
-  //     if ($denied_user_role == $user_role) {
-  //       switch($denied_user_role){
-  //         case 'admin': $app->redirect("/adminbar"); break;
-  //         case 'user': $app->redirect("/account"); break;
-  //         case 'guest': 
-  //           $app->flash('error', 'Login required');
-  //           $app->setCookie('urlRedirect', $app->request()->getPathInfo(), '4 minutes');
-  //           $app->redirect("/login");
-  //           break;
-  //         }
-  //     }
-  //   };
-  // };
 }
-

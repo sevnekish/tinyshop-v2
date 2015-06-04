@@ -39,12 +39,13 @@ class User extends Illuminate\Database\Eloquent\Model {
                        'updated_at'
   ];
 
-  public static $name_rules      = ['name'      => 'required|between:2,120'];
-  public static $email_rules     = ['email'     => 'required|max:255|email|unique:users'];
-  public static $email_alt_rules = ['email'     => 'required|max:255|email'];
-  public static $password_rules  = ['password'  => 'required|between:6,255'];
-  public static $telephone_rules = ['telephone' => 'required|min:6|numeric'];
-  public static $address_rules   = ['address'   => 'required|between:7,160'];
+  public static $name_rules         = ['name'      => 'required|between:2,120'];
+  public static $email_rules        = ['email'     => 'required|max:255|email|unique:users'];
+  public static $email_alt_rules    = ['email'     => 'required|max:255|email'];
+  public static $password_rules     = ['password'  => 'required|between:6,255'];
+  public static $password_alt_rules = ['password'  => 'between:6,255'];
+  public static $telephone_rules    = ['telephone' => 'required|min:6|numeric'];
+  public static $address_rules      = ['address'   => 'required|between:7,160'];
 
 
 
@@ -92,6 +93,12 @@ class User extends Illuminate\Database\Eloquent\Model {
     return StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
   }
 
+  public function create_reset_digest() {
+    $this->reset_digest  = StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
+    $this->reset_sent_at = date ("Y-m-d H:i:s", time());
+    $this->save();
+  }
+
   public function send_activation_email() {
     $tags_mail    = [':/name', ':/link'];
     //modify link with constant !!! Not final version!
@@ -100,6 +107,10 @@ class User extends Illuminate\Database\Eloquent\Model {
     //modify path for file with constant !!! Not final version!
     $mail_html = str_replace($tags_mail, $replace_mail, file_get_contents('../app/views/mailer/activation_mail.php'));
     send_mail($this->email, $this->name, 'Activation email', $mail_html);
+  }
+
+  public function send_reset_email(); {
+    
   }
 
 

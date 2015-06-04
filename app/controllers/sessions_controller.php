@@ -1,9 +1,12 @@
 <?
-$app->get("/login", function() use ($app) {
-  $app->render('sessions/new.php');
+//session#new
+$app->get("/login", SessionsHelper::not_logged_in_user($app), function() use ($app) {
+  isset($_SESSION['forward_url']) ? $forward_url = $_SESSION['forward_url'] : $forward_url = null;
+  $app->render('sessions/new.php', ['forward_url' => $forward_url]);
 });
 
-$app->post("/login", function() use ($app, $validator) {
+//session#create
+$app->post("/login", SessionsHelper::not_logged_in_user($app), function() use ($app, $validator) {
   $params = $app->request()->post();
 
   $validation = $validator->make($params, array_merge(
@@ -38,6 +41,7 @@ $app->post("/login", function() use ($app, $validator) {
 
 });
 
+//session#destroy
 $app->get("/logout", function() use ($app) {
   if (SessionsHelper::logged_in($app)) SessionsHelper::log_out($app);
   $app->redirect('/');

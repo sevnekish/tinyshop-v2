@@ -1,6 +1,7 @@
 <?
-//need some midleware for protectiong access
-$app->get("/account_activations/:activation_digest/edit/:email",  function($activation_digest, $email) use ($app) {
+
+//account_activations#edit
+$app->get("/account_activations/:activation_digest/edit/:email", function($activation_digest, $email) use ($app) {
 
   $user = User::where('email', '=', StringHelper::base64_url_decode($email))->first();
 

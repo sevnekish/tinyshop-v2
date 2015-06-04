@@ -44,7 +44,7 @@
               <li class="divider" ></li>
               
               <li>
-                <a href="/registration">Sign up</a>
+                <a href="/users/new">Sign up</a>
               </li>
             </ul>
 
@@ -53,11 +53,11 @@
 
         {% if current_user %}
           <li>
-            <a href="#">
+            <a href="/users/{{ current_user.id }}">
               {% if current_user.admin %}
                 <i class="fa fa-wrench"></i> admin@email.com
               {% else %}
-                <i class="fa fa-user"></i> example@email.com
+                <i class="fa fa-user"></i> {{ current_user.email }}
               {% endif %}
             </a>
           </li>
