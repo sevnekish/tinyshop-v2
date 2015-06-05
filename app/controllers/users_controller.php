@@ -37,21 +37,19 @@ $app->post("/users", SessionsHelper::not_logged_in_user($app), function() use ($
   if ($environment == 'development'){
     // used on local machine when you not able to send email
     // after sign up activation link appears in debug_info block
-    $activation_digest = $user->create_activation_digest();
-    $user->password_digest   = $user->create_password_digest($params['password']);
-    $user->activation_digest = $activation_digest;
+    $user->create_digest('activation');
+    $user->create_digest('password', $params['password']);
 
     $user->save();
-    $app->flash('debug_info', ['link' => ['Activation link' => '/account_activations/' . $activation_digest 
+    $app->flash('debug_info', ['link' => ['Activation link' => '/account_activations/' . $user->activation_digest 
                                             . '/edit/' . StringHelper::base64_url_encode($user->email)]]
     );
     $app->redirect('/');
 
   }
 
-  $activation_digest = $user->create_activation_digest();
-  $user->password_digest   = $user->create_password_digest($params['password']);
-  $user->activation_digest = $activation_digest;
+  $user->create_digest('activation');
+  $user->create_digest('password', $params['password']);
 
   $user->send_activation_email();
 
@@ -161,7 +159,7 @@ $app->post("/users/:id", SessionsHelper::logged_in_user($app), function($id) use
   $user->telephone       = $params['telephone'];
   $user->address         = $params['address'];
   if (isset($params['password']))
-    $user->password_digest = $user->create_password_digest($params['password']);
+    $user->create_digest('password', $params['password']);
 
   $user->save();
 

@@ -109,15 +109,6 @@ $app->hook('slim.before.dispatch', function() use ($app) {
   // $categories = $user->getCategories();
   // $cart_count = $cart->getCount();
 
-  // $flash = $app->view()->getData('flash');
-  // $error = isset($flash['error']) ? $flash['error'] : '';
-  // $success = isset($flash['success']) ? $flash['success'] : '';
-  // $flash = $app->view()->getData('flash');
-
-  // echo '<pre>';
-  // print_r($flash);
-  // echo '</pre>';
-  // exit;
   // $app->view()->setData(array(
   //                 'userparams' => $userparams,
   //                 'cart_count' => $cart_count,

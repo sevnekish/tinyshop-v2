@@ -85,24 +85,19 @@ class User extends Illuminate\Database\Eloquent\Model {
     $this->save();
   }
 
-  public function create_password_digest($password) {
-    return StringHelper::base64_url_encode(password_hash($password, PASSWORD_BCRYPT));
-  }
-
-  public function create_activation_digest() {
-    return StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
-  }
-
-  public function create_reset_digest() {
-    $this->reset_digest  = StringHelper::base64_url_encode(password_hash($this->new_token(), PASSWORD_BCRYPT));
-    $this->reset_sent_at = date ("Y-m-d H:i:s", time());
+  public function create_digest($attribute, $token = '') {
+    $token = $token ? $token : $this->new_token();
+    $attribute = $attribute . '_digest';
+    $this->{$attribute} = StringHelper::base64_url_encode(password_hash($token, PASSWORD_BCRYPT));
+    if ($attribute == 'reset_digest')
+      $this->reset_sent_at = date ("Y-m-d H:i:s", time());
     $this->save();
   }
 
   public function send_activation_email() {
     $tags_mail    = [':/name', ':/link'];
     //modify link with constant !!! Not final version!
-    $link = 'http://tinyshopv2/account_activations/' . $user->create_activation_digest() . '/edit/' . StringHelper::base64_url_encode($user->email);
+    $link = 'http://tinyshopv2/account_activations/' . $user->activation_digest . '/edit/' . StringHelper::base64_url_encode($user->email);
     $replace_mail = [$this->name, $link];
     //modify path for file with constant !!! Not final version!
     $mail_html = str_replace($tags_mail, $replace_mail, file_get_contents('../app/views/mailer/activation_mail.php'));
@@ -112,7 +107,6 @@ class User extends Illuminate\Database\Eloquent\Model {
   public function send_reset_email() {
     
   }
-
 
 
 }

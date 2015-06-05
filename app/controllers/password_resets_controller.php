@@ -9,7 +9,7 @@ $app->post("/password_resets", SessionsHelper::not_logged_in_user($app), functio
   $params = $app->request()->post();
 
   $validation = $validator->make($params, array_merge(
-                                 User::$email_alt_rules
+                                                      User::$email_alt_rules
   ));
 
   //creating array of validation errors
@@ -28,33 +28,27 @@ $app->post("/password_resets", SessionsHelper::not_logged_in_user($app), functio
     $app->redirect('/');
   }
 
-  if ($user->activated) {
+  SessionsHelper::is_activated($app, $user);
 
-    if ($environment == 'development'){
-      // used on local machine when you not able to send email
-      // after submit password reset link appears in debug_info block
-      $user->create_reset_digest();
-      $user->save();
-
-      $app->flash('debug_info', ['link' => ['Password reset link' => '/password_resets/' . $user->reset_digest 
-                                              . '/edit/' . StringHelper::base64_url_encode($user->email)]]
-      );
-      $app->redirect('/');
-    }
-
-    $user->create_reset_digest();
+  if ($environment == 'development'){
+    // used on local machine when you not able to send email
+    // after submit password reset link appears in debug_info block
+    $user->create_digest('reset');
     $user->save();
 
-    $user->send_reset_email();
-
-    $app->flash('messages', ['info' => ['Email send with password reset instructions']]);
-    $app->redirect('/');
-
-  } else {
-    $app->flash('messages', ['warning' => ['Account not activated! Check your email for the activation link.']]);
+    $app->flash('debug_info', ['link' => ['Password reset link' => '/password_resets/' . $user->reset_digest 
+                                            . '/edit/' . StringHelper::base64_url_encode($user->email)]]
+    );
     $app->redirect('/');
   }
 
+  $user->create_digest('reset');
+  $user->save();
+
+  $user->send_reset_email();
+
+  $app->flash('messages', ['info' => ['Email send with password reset instructions']]);
+  $app->redirect('/');
 });
 
 //password_resets#edit
@@ -83,7 +77,7 @@ $app->post("/password_resets/:reset_digest", SessionsHelper::not_logged_in_user(
     SessionsHelper::is_activated($app, $user);
 
     $validation = $validator->make($params, array_merge(
-                                   User::$password_rules
+                                                        User::$password_rules
     ));
 
     //creating array of errors
@@ -99,7 +93,7 @@ $app->post("/password_resets/:reset_digest", SessionsHelper::not_logged_in_user(
       $app->redirect('/password_resets/' . $reset_digest . '/edit/' . $params['email']);
     }
 
-    $user->password_digest = $user->create_password_digest($params['password']);
+    $user->create_digest('password', $params['password']);
     $user->save();
 
     SessionsHelper::log_in($user);
