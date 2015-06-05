@@ -11,7 +11,7 @@
       <label>Email</label>
       <input name="email" id="inputEmail" class="form-control" type="email" autofocus="" required="" >
 
-      <label>Password<a href="/password_resets/new">(forgot password)</a></label>
+      <label>Password</label><a href="/password_resets/new"> (forgot password)</a>
       <label class="sr-only" for="inputPassword">Password</label>
       <input name="password" id="inputPassword" class="form-control" type="password" required="" autocomplete="off">
       <div class="checkbox">

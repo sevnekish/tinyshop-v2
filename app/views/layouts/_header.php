@@ -55,7 +55,7 @@
           <li>
             <a href="/users/{{ current_user.id }}">
               {% if current_user.admin %}
-                <i class="fa fa-wrench"></i> admin@email.com
+                <i class="fa fa-wrench"></i> {{ current_user.email }}
               {% else %}
                 <i class="fa fa-user"></i> {{ current_user.email }}
               {% endif %}

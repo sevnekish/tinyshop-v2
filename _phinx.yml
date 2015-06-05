@@ -38,3 +38,5 @@ illuminate_config:
     prefix: ''
 
 environment: development
+
+timezone: Europe/Minsk

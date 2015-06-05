@@ -34,7 +34,7 @@ function fromYaml($configFilePath) {
 $configArray = fromYaml('../phinx.yml');
 
 
-
+date_default_timezone_set($configArray['timezone']);
 
 \Slim\Slim::registerAutoloader();
 

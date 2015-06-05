@@ -110,7 +110,7 @@ class User extends Illuminate\Database\Eloquent\Model {
     $replace_mail = [$this->name, $link];
     //modify path for file with constant !!! Not final version!
     $mail_html = str_replace($tags_mail, $replace_mail, file_get_contents('../app/views/mailer/activation_mail.php'));
-    send_mail($this->email, $this->name, 'Activation email', $mail_html);
+    Mailer::send_mail($this->email, $this->name, 'Activation email', $mail_html);
   }
 
   public function send_reset_email() {

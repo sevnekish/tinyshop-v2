@@ -29,7 +29,6 @@
             "app/helpers"
         ],
         "files": [
-            "app/mailer/smtp_mailer.php"
         ]
     }
 }
