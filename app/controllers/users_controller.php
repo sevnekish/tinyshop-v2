@@ -1,5 +1,6 @@
 <?
 
+
 // users#new
 $app->get("/users/new", SessionsHelper::not_logged_in_user($app), function() use ($app) {
   $app->render('users/new.php');

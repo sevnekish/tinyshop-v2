@@ -7,7 +7,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3">
         <div class="list-group adminbar">
           {% if current_user.admin %}
-            <a href="/admin_panel" class="list-group-item"><i class="fa fa-wrench"></i> Admin panel</a>
+            <a href="/adminpanel" class="list-group-item"><i class="fa fa-wrench"></i> Admin panel</a>
           {% endif %}
           <a href="/users/{{ current_user.id }}" class="list-group-item"><i class="fa fa-user"></i> Contact info</a>
           <a href="/users/{{ current_user.id }}/orders" class="list-group-item"><i class="fa fa-book"></i> Orders</a>
