@@ -94,6 +94,15 @@ class User extends Illuminate\Database\Eloquent\Model {
     $this->save();
   }
 
+  public function password_reset_expired() {
+    if ($this->time_difference(time(), strtotime($this->reset_sent_at)) > 2)
+      return true;
+  }
+
+  private function time_difference($time1, $time2) {
+    return round(($time1 - $time2)/3600, 1);
+  }
+
   public function send_activation_email() {
     $tags_mail    = [':/name', ':/link'];
     //modify link with constant !!! Not final version!

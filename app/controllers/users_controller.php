@@ -110,8 +110,27 @@ $app->get("/users/test",  function() use ($app, $validator, $environment) {
   // $app->setCookie('test', 'worked');
   // echo '<pre>';
   // print_r($app->request()->getPathInfo());exit;
-  $user = User::where('email', '=', 'ololo')->first();
-  var_dump($user);exit;
+  // $user = User::where('email', '=', 'ololo')->first();
+  // var_dump($user);exit;
+  //////////////////////////////////////
+ 
+
+  $user = User::find(12);
+  var_dump(time());
+  echo '<br>';
+  echo date ("Y-m-d H:i:s", time());
+  echo '<br>';
+  echo strtotime($user->reset_sent_at);
+  echo '<br>';
+  echo $user->reset_sent_at;
+  exit;
+  if (time_difference(time(), strtotime($user->reset_sent_at)) > 2)
+    echo 'more then 2';
+  
+
+  function time_difference($time1, $time2) {
+    return round(($time1 - $time2)/3600, 1);
+  }
 });
 
 // users#show

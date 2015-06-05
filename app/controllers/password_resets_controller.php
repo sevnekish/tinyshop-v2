@@ -55,17 +55,14 @@ $app->post("/password_resets", SessionsHelper::not_logged_in_user($app), functio
 $app->get("/password_resets/:reset_digest/edit/:email", SessionsHelper::not_logged_in_user($app), function($reset_digest, $email) use ($app) {
   $user = User::where('email', '=', StringHelper::base64_url_decode($email))->first();
 
-  if ($user && $user->is_authenticated('reset', $reset_digest)) {
-    SessionsHelper::is_activated($app, $user);
+  PasswordResetsHelper::valid_user($app, $user, $reset_digest);
+  PasswordResetsHelper::check_expiration($app, $user);
+  SessionsHelper::is_activated($app, $user);
 
-    $app->render('password_resets/edit.php', [
-                                              'reset_digest' => $reset_digest,
-                                              'email'        => $email
-    ]);
-  } else {
-    $app->flash('messages', ['danger' => ['Invalid password reset link']]);
-    $app->redirect('/');
-  }
+  $app->render('password_resets/edit.php', [
+                                            'reset_digest' => $reset_digest,
+                                            'email'        => $email
+  ]);
 });
 
 //password_resets#update
@@ -73,35 +70,33 @@ $app->post("/password_resets/:reset_digest", SessionsHelper::not_logged_in_user(
   $params = $app->request()->post();
   $user = User::where('email', '=', StringHelper::base64_url_decode($params['email']))->first();
 
-  if ($user && $user->is_authenticated('reset', $reset_digest)) {
-    SessionsHelper::is_activated($app, $user);
+  PasswordResetsHelper::valid_user($app, $user, $reset_digest);
+  PasswordResetsHelper::check_expiration($app, $user);
+  SessionsHelper::is_activated($app, $user);
 
-    $validation = $validator->make($params, array_merge(
-                                                        User::$password_rules
-    ));
+  $validation = $validator->make($params, array_merge(
+                                                      User::$password_rules
+  ));
 
-    //creating array of errors
-    $message_password_confirmation = array();
-    if ($params['password'] != $params['password_confirmation'])
-      $message_password_confirmation = ['Password confirmation doesn\'t match'];
-    $messages_validation = $validation->messages()->all();
-    $messages_all = array_merge($message_password_confirmation, $messages_validation);
+  //creating array of errors
+  $message_password_confirmation = array();
+  if ($params['password'] != $params['password_confirmation'])
+    $message_password_confirmation = ['Password confirmation doesn\'t match'];
+  $messages_validation = $validation->messages()->all();
+  $messages_all = array_merge($message_password_confirmation, $messages_validation);
 
-    //if there is any validation errors
-    if (!empty($messages_all)) {
-      $app->flash('messages', ['danger' => $messages_all]);
-      $app->redirect('/password_resets/' . $reset_digest . '/edit/' . $params['email']);
-    }
-
-    $user->create_digest('password', $params['password']);
-    $user->save();
-
-    SessionsHelper::log_in($user);
-
-    $app->flash('messages', ['success' => ['Password has been reset']]);
-    $app->redirect('/users/' . $user->id);
-  } else {
-    $app->flash('messages', ['danger' => ['Invalid password reset link']]);
-    $app->redirect('/');
+  //if there is any validation errors
+  if (!empty($messages_all)) {
+    $app->flash('messages', ['danger' => $messages_all]);
+    $app->redirect('/password_resets/' . $reset_digest . '/edit/' . $params['email']);
   }
+
+  $user->create_digest('password', $params['password']);
+  $user->save();
+
+  SessionsHelper::log_in($user);
+
+  $app->flash('messages', ['success' => ['Password has been reset']]);
+  $app->redirect('/users/' . $user->id);
+  
 });
