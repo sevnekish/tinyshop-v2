@@ -17,14 +17,7 @@
         <li><a href="/">Home</a></li>
         <!-- <li><a href="/catalog"></a></li> -->
         <li class="dropdown">
-          <a href="/catalog" class="dropdown-toggle" data-toggle="dropdown">Catalog <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-
-            <? foreach ($categories as $id => $category):?>
-              <li><a href="/catalog/<?=$category?>"><?=$category?></a></li>
-            <? endforeach; ?>
-              
-          </ul>
+          <a href="/catalog">Catalog</a>
         </li>
         <li><a href="/reviews">Reviews</a></li>
       </ul>

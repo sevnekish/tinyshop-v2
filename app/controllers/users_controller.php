@@ -6,6 +6,12 @@ $app->get("/users/new", SessionsHelper::not_logged_in_user($app), function() use
   $app->render('users/new.php');
 });
 
+// users#index
+$app->get("/adminpanel/users", function() use ($app) {
+  $app->render('users/index.php');
+});
+
+
 // users#create
 $app->post("/users", SessionsHelper::not_logged_in_user($app), function() use ($app, $validator, $environment) {
 
