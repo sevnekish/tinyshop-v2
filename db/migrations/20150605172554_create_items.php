@@ -7,11 +7,10 @@ class CreateItems extends AbstractMigration
     /**
      * Change Method.
      */
-
     public function change()
     {
-        $users = $this->table('items');
-        $users->addColumn('category_id',     'integer',  array('limit' => 11))
+        $items = $this->table('items');
+        $items->addColumn('category_id',     'integer',  array('limit' => 11))
               ->addColumn('brand_id',        'integer',  array('limit' => 11))
               ->addColumn('model',           'string',   array('limit' => 255))
               ->addColumn('characteristics', 'text')

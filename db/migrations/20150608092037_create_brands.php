@@ -2,16 +2,15 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreatePhotos extends AbstractMigration
+class CreateBrands extends AbstractMigration
 {
     /**
      * Change Method.
      */
     public function change()
     {
-        $photos = $this->table('photos');
-        $photos->addColumn('item_id',    'integer',  array('limit' => 11))
-               ->addColumn('photo',      'text')
+        $brands = $this->table('brands');
+        $brands->addColumn('name',       'string',  array('limit' => 255))
                ->addColumn('created_at', 'datetime')
                ->addColumn('updated_at', 'datetime', array('null' => true))
                ->create();

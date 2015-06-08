@@ -6,7 +6,7 @@
       <form name="addcategory" class="form-new-item" action="/brands" enctype="multipart/form-data" method="post">
 
         <label>Add brand</label>
-          <input name="brand" type="text" value="" class="form-control input-xlarge" autocomplete="off" required>
+          <input name="name" type="text" value="{{ prev_params.name }}" class="form-control input-xlarge" autocomplete="off" required>
         <div>
           <button class="btn btn-lg btn-primary pull-right btn-adminbar" type="submit">Add brand</button>
         </div>
